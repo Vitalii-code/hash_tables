@@ -24,11 +24,8 @@ def string_to_hash(s, max_size) -> int:
     """returns a hash from a string"""
     # swap the middle letters
 
-    s_swapped = s
-    # s_swapped = swap_middle_letters(s)
-
     out = []
-    for i, char in enumerate(s_swapped):
+    for i, char in enumerate(s):
         out.append(ord(char) ** i ^ 7919)
 
     # all the numbers of the letters added together
@@ -48,8 +45,19 @@ class HashTable:
         """appends a value to the hash table. Returns True on success or False on failure"""
         hash = string_to_hash(value, self.hash_table_size)
 
-        # If hash already exists in the table then return False
+        # If something is already in the table then return False
         if self.retrieve(hash):
+            # retrieve the current value that was in the cell originally, and add the new value to it 
+            
+            # what is currently in the cell
+            current_element = self.__dictionary[hash]
+            if type(current_element) is list: 
+                # this will replace current element and make it a list
+                current_element.append(value)
+
+            elif type(current_element) is str:
+                self.__dictionary[hash] = [current_element, value]
+
             return False
         # Assign the value to the hash if the slot is empty
         else:
@@ -62,6 +70,13 @@ class HashTable:
             return self.__dictionary[hash]
         except KeyError:
             return False
+
+    # def search(self, value):
+    #     if type(self.__dictionary[hash]) is list:
+    #             for i in self.__dictionary[hash]:
+    #                 if i == value:
+    #                     return 
+    #                 else:
 
     def remove(self, hash):
         """Removes something from the table"""
@@ -91,13 +106,10 @@ for i in range(0, 100):
 # )
 # print("Hash table size:", my_hashtable1.hash_table_size)
 # print("The length of the table after adding words is", len(my_hashtable1.get_dict()))
-# print(
-#     f"The percentage of collisions is: {collisions / my_hashtable1.hash_table_size * 100}%"
-# )
+print(
+    f"The percentage of collisions is: {collisions / my_hashtable1.hash_table_size * 100}%"
+)
 
-# print(my_hashtable1.search("Another value"))
 
-# my_hashtable1.display()
+my_hashtable1.display()
 
-hash = string_to_hash("aardvarks", my_hashtable1.hash_table_size)
-print(my_hashtable1.retrieve(hash))
