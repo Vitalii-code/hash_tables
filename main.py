@@ -54,6 +54,7 @@ class HashTable:
             if type(current_element) is list: 
                 # this will replace current element and make it a list
                 current_element.append(value)
+                self.__dictionary[hash] = current_element
 
             elif type(current_element) is str:
                 self.__dictionary[hash] = [current_element, value]
@@ -71,13 +72,18 @@ class HashTable:
         except KeyError:
             return False
 
-    # def search(self, value):
-    #     if type(self.__dictionary[hash]) is list:
-    #             for i in self.__dictionary[hash]:
-    #                 if i == value:
-    #                     return 
-    #                 else:
+    def search(self, value: str) -> [str, int]:
+        # returns the hash index and what position is in the list it is [hash, index]
+        hash = string_to_hash(value, self.hash_table_size)
 
+        if type(self.__dictionary[hash]) is list:
+                for i, element in enumerate(self.__dictionary[hash]):
+                    if element == value:
+                        return [hash, i]
+                return False
+        elif type(self.__dictionary[hash]) is str:
+            return [hash, 0]
+        
     def remove(self, hash):
         """Removes something from the table"""
         self.__dictionary.pop(hash)
@@ -112,4 +118,7 @@ print(
 
 
 my_hashtable1.display()
+
+
+print(my_hashtable1.search("abamps"))
 
